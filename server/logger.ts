@@ -16,11 +16,11 @@ const hformat = winston.format.printf(
 );
 
 // logform's colorize() forces colors on, so only add it when color is wanted.
-// Same precedence as Node: FORCE_COLOR, then NO_COLOR, then whether stdout is a TTY.
+// A non-empty FORCE_COLOR (https://force-color.org) turns colors on, a non-empty
+// NO_COLOR (https://no-color.org) turns them off, otherwise use them on a TTY.
 const useColor = (() => {
-  const forceColor = process.env.FORCE_COLOR;
-  if (forceColor !== undefined) {
-    return forceColor !== '0' && forceColor.toLowerCase() !== 'false';
+  if (process.env.FORCE_COLOR) {
+    return true;
   }
   if (process.env.NO_COLOR) {
     return false;
